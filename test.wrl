@@ -1,0 +1,176 @@
+#VRML V2.0 utf8
+
+Background {
+	skyColor 0.1 0.1 1
+	groundColor	0.3 1.0 0.3
+}
+
+Transform {
+	translation -500 0 -500
+	children [
+		PointLight {
+			ambientIntensity 0.5
+			intensity 1
+			color 0.5 1 1
+			location 100 0 0
+			on TRUE
+			radius 1000
+		}
+
+#		Shape {
+#			geometry Box {
+#				size 1000 1000 1000
+#			}
+#			appearance Appearance {
+#				texture	ImageTexture {
+#					url	"sky01.jpg"
+#				}
+#			}
+#		}
+	]
+}
+
+Viewpoint {
+	description	"Z vrchu"
+	position 25 25 30
+	orientation 0.3 0 0 -1.571
+}
+
+Transform {
+	translation	1 0 0
+	children [
+		Shape { 
+			appearance Appearance {
+				material Material {
+					diffuseColor 0.5 1 1
+					shininess 0.1
+				}
+			}
+			geometry Box { 
+				size 2 2 2
+			}
+		}
+	]
+}	
+
+Transform {
+    translation 5 0 0
+    children [
+Shape {
+	appearance Appearance {
+		material Material {
+			shininess 0.1
+			specularColor 1 0 0
+			emissiveColor 0.9 0 0
+		}
+	}
+	geometry Sphere	{
+		radius 1.0
+	}
+}
+]
+}
+
+SpotLight {
+	location 0 5 0
+	color 1 0 0
+	direction 1 0 0
+	on TRUE
+	beamWidth 1.6
+	radius 5
+}
+
+PROTO Osa [
+	field SFRotation rotation 0 0 0	0
+	field SFColor color 1 0 0
+]
+{
+	Group {
+		children [
+			Transform {
+				rotation IS	rotation
+				children [
+                    # Osa.
+					Shape {
+						geometry Cylinder {
+							radius 0.25
+							height 20
+						}
+						appearance Appearance {
+							material Material {
+								emissiveColor IS color
+							}
+						}    
+                    }
+                    # Koukle na konci.
+			        Transform {
+				        translation	0 10 0
+				        children [
+					        Shape {
+						        geometry Sphere	{
+							        radius 0.3
+						        }
+						        appearance Appearance {
+							        material Material {
+								        emissiveColor IS color
+							        }
+						        }
+					        }
+				        ]
+			        }
+				]	
+			}
+		]
+	}
+}
+
+DEF OsaX Osa {
+	rotation 0.0 0.0 1.0 -1.571
+	color 1 0 0 # cervena
+}
+
+DEF OsaY Osa {
+    rotation 0.0 0.0 0.0 0
+    color 0 1 0 # zelena
+}
+
+DEF OsaZ Osa {
+    rotation 1.0 0.0 0.0 1.571
+    color 0 0 1 # modra
+}
+
+
+DEF Podklad Shape {
+	appearance Appearance {     
+        textureTransform TextureTransform {
+            scale 50 50
+        }
+		texture	ImageTexture {
+			repeatS	TRUE
+			repeatT	TRUE
+			url	"grass02.png"
+		}
+		material Material {
+			diffuseColor 0 1 0
+		}
+	}
+	geometry ElevationGrid {
+		xDimension 10
+		zDimension 10
+		xSpacing 5
+		zSpacing 5
+		solid TRUE
+		height [
+			1 1 1 1 1 1 1 1 1 1
+			1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+            1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+			1 0 0 0 0 0 0 0 0 1
+			1 1 1 1 1 1 1 1 1 1
+		]
+	}
+}
