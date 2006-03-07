@@ -3,19 +3,24 @@
 Background {
 	skyColor 0.1 0.1 1
 	groundColor	0.3 1.0 0.3
+    leftUrl "clouds01.jpg"
+    rightUrl "clouds01.jpg"
+    frontUrl "clouds01.jpg"
+    backUrl "clouds01.jpg"
+}
+
+PointLight {
+	ambientIntensity 0.5
+	intensity 1
+	color 0.5 1 1
+	location 0 100 0
+	on TRUE
+	radius 1000
 }
 
 Transform {
 	translation -500 0 -500
 	children [
-		PointLight {
-			ambientIntensity 0.5
-			intensity 1
-			color 0.5 1 1
-			location 100 0 0
-			on TRUE
-			radius 1000
-		}
 
 #		Shape {
 #			geometry Box {
@@ -42,9 +47,14 @@ Transform {
 		Shape { 
 			appearance Appearance {
 				material Material {
-					diffuseColor 0.5 1 1
+					#diffuseColor 0.5 1 1
+                    specularColor 0 1 0
 					shininess 0.1
+                    diffuseColor 0 0.5 0
 				}
+                texture ImageTexture {
+                    url "grass01.jpg"
+                }
 			}
 			geometry Box { 
 				size 2 2 2
@@ -53,32 +63,14 @@ Transform {
 	]
 }	
 
-Transform {
-    translation 5 0 0
-    children [
-Shape {
-	appearance Appearance {
-		material Material {
-			shininess 0.1
-			specularColor 1 0 0
-			emissiveColor 0.9 0 0
-		}
-	}
-	geometry Sphere	{
-		radius 1.0
-	}
-}
-]
-}
-
-SpotLight {
-	location 0 5 0
-	color 1 0 0
-	direction 1 0 0
-	on TRUE
-	beamWidth 1.6
-	radius 5
-}
+#SpotLight {
+#	location 0 5 0
+#	color 1 0 0
+#	direction 1 0 0
+#	on TRUE
+#	beamWidth 1.6
+#	radius 5
+#}
 
 PROTO Osa [
 	field SFRotation rotation 0 0 0	0
@@ -99,6 +91,7 @@ PROTO Osa [
 						appearance Appearance {
 							material Material {
 								emissiveColor IS color
+                                transparency 0.2
 							}
 						}    
                     }
@@ -113,6 +106,7 @@ PROTO Osa [
 						        appearance Appearance {
 							        material Material {
 								        emissiveColor IS color
+                                        transparency 0.2
 							        }
 						        }
 					        }
@@ -141,6 +135,25 @@ DEF OsaZ Osa {
 
 
 DEF Podklad Shape {
+   	geometry ElevationGrid {
+		xDimension 10
+		zDimension 10
+		xSpacing 5
+		zSpacing 5
+		solid TRUE
+		height [
+			1    1    1    1    1    1    1    1    1    1
+			1    0.5  0.25 0    0    0    0    0    0    1
+			1    0.25 0.1  0    0    0    0    0    0    1
+			1    0    -0.1 0    0    0    0    0    0    1
+			1    0    0    0    0    0    0    0    0    1
+            1    0    0.2  0.3  0.2  0    0    0    0    1
+			1    0    0    0    0    0    0    0    0    1
+			1    0    0    0    0    0    0    0    0    1
+			1    0    0    0    0    0    0    0    0    1
+			1    1    1    1    1    1    1    1    1    1
+		]
+	}
 	appearance Appearance {     
         textureTransform TextureTransform {
             scale 50 50
@@ -154,23 +167,64 @@ DEF Podklad Shape {
 			diffuseColor 0 1 0
 		}
 	}
-	geometry ElevationGrid {
-		xDimension 10
-		zDimension 10
-		xSpacing 5
-		zSpacing 5
-		solid TRUE
-		height [
-			1 1 1 1 1 1 1 1 1 1
-			1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-            1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-			1 0 0 0 0 0 0 0 0 1
-			1 1 1 1 1 1 1 1 1 1
-		]
-	}
+}
+
+PROTO EquilateralTriangle [
+    field MFVec3f point [-1 0 0, 1 0 0, 0 0.866 0]
+]
+{
+    Shape {
+        geometry IndexedFaceSet {
+            coord Coordinate {
+                point IS point
+            }
+            coordIndex [0 1 2]
+        }
+    }
+}
+
+PROTO EquilateralTriangle3D [
+    field MFVec3f point [-1 0 0, 1 0 0, 0 0.866 0]
+    field SFFloat height 1
+    field SFColor diffuseColor 1 1 1
+]
+{
+    Shape {
+        geometry Extrusion {
+            crossSection [-1 0, 1 0, 0 0.866]
+            spine [0 0 0, 1 0 0]
+            scale [1 1, 1 1]
+        }
+    }
+}
+
+Group {
+    children [
+        Shape {
+            geometry Cylinder {
+                radius 0.03
+                height 2
+            }
+            appearance Appearance {
+                material Material {
+                    shininess 0.8
+                    diffuseColor 1 1 1
+                    specularColor 0.9 0.9 0.9
+                }
+            }
+        }
+
+        Shape {
+            geometry IndexedFaceSet {
+                coord Coordinate {
+                    point [
+                        -0.2 0 0,
+                        0.2 0 0,
+                        0 0.2 0
+                    ]
+                }
+                coordIndex [0 1 2]
+            }
+        }
+    ]
 }
