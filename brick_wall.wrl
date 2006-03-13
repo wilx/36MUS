@@ -1,0 +1,20 @@
+#VRML V2.0 utf8
+
+PROTO BrickWall [] {
+Shape {
+    geometry Box {
+        size 100 3 0.6
+    }    
+    appearance Appearance {
+        texture ImageTexture {
+            url "brick_wall.jpg"
+            repeatS TRUE
+            repeatT TRUE
+        }
+        material Material {
+            diffuseColor .95 .5 0
+            specularColor 1 0 0
+        }
+    }
+}
+}
