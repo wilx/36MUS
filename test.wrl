@@ -1,5 +1,12 @@
 #VRML V2.0 utf8
 
+NavigationInfo {
+    avatarSize [0.1 1.86 0.5]
+    headlight TRUE
+    speed 4
+    #type "AVATAR"
+}
+
 Background {
 	skyColor 0.1 0.1 1
 	groundColor	0.3 1.0 0.3
@@ -9,36 +16,241 @@ Background {
     backUrl "clouds01.jpg"
 }
 
+
+### Globalni svetla.
+DirectionalLight {
+    on TRUE
+    intensity 1
+    ambientIntensity 0.5
+    color .99 .99 0.7
+    direction 0 -1 0
+}
+
 PointLight {
 	ambientIntensity 0.5
 	intensity 1
-	color 0.5 1 1
-	location 0 100 0
+	color 1 1 1
+	location 50 100 50
 	on TRUE
-	radius 1000
+	radius 10000
 }
 
-Transform {
-	translation -500 0 -500
-	children [
 
-#		Shape {
-#			geometry Box {
-#				size 1000 1000 1000
-#			}
-#			appearance Appearance {
-#				texture	ImageTexture {
-#					url	"sky01.jpg"
-#				}
-#			}
-#		}
-	]
+### Pohledy.
+Viewpoint {
+    description "Start"
+    position 10 1.86 10
 }
 
 Viewpoint {
 	description	"Z vrchu"
-	position 25 25 30
+	position 50 150 50
 	orientation 0.3 0 0 -1.571
+}
+
+
+### Definice stavebnich kamenu.
+PROTO ZnDejPrednost []
+{
+Group { children [
+    # Horni trojuhelnik
+    Transform {
+        rotation 1 0 0 1.5708
+        scale 0.4 0.4 0.4
+        translation 0 2.1 0.06
+        children [
+            # Cerveny podklad
+            Shape {
+                geometry Extrusion {
+                    crossSection [-1 0, 1 0, 0 1.73205]
+                    spine [0 0 0, 0 0.003 0]
+                    beginCap TRUE
+                    endCap TRUE
+                    solid TRUE
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor 1 0 0
+                        specularColor 0.9 0.1 0.1
+                    }
+                }
+            }
+
+            # Bile pole
+            Transform {
+                scale 0.6 1 0.6
+                translation 0 0 0.25
+                children [
+                    Shape {
+                        geometry Extrusion {
+                            crossSection [-1 0, 1 0, 0 1.73205]
+                            spine [0 0.0001 0, 0 0.0035 0]
+                            beginCap TRUE
+                            endCap TRUE
+                            solid TRUE
+                        }
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor 1 1 1
+                                specularColor 0.9 0.9 0.9
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+
+    # Sloupek.
+    Transform {
+        translation 0 1 0
+        children [
+            Shape {
+                geometry Cylinder {
+                    radius 0.04
+                    height 2
+                }
+                appearance Appearance {
+                    material Material {
+                        shininess 0.8
+                        diffuseColor 1 1 1
+                        specularColor 0.9 0.9 0.9
+                    }
+                }
+            }
+        ]
+    }
+]}
+}
+
+PROTO ZnHlavniSilnice [] {
+Group { children [
+    # Horni ctverec.
+    Transform {
+        rotation 1 0 0 1.5708
+        scale 0.3 0.3 0.3
+        translation 0 2.1 0.06
+        children [
+            Transform {
+                children [
+                    # Bily podklad.
+                    Shape {
+                        geometry Extrusion {
+                            crossSection [-2 0, 0 2, 2 0, 0 -2]
+                            spine [0 0 0, 0 0.003 0]
+                            beginCap TRUE
+                            endCap TRUE
+                            solid TRUE
+                        }
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor .95 .95 .95
+                                specularColor 1 1 1
+                            }
+                        }
+                    }
+
+                    # Zlute pole.
+                    Transform {
+                        scale 0.6 1 0.6
+                        children [
+                            Shape {
+                                geometry Extrusion {
+                                    crossSection [-2 0, 0 2, 2 0, 0 -2]
+                                    spine [0 0.0001 0, 0 0.0035 0]
+                                    beginCap TRUE
+                                    endCap TRUE
+                                    solid TRUE
+                                }
+                                appearance Appearance {
+                                    material Material {
+                                        diffuseColor .95 .95 0
+                                        specularColor 1 1 0
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    # Sloupek.
+    Transform {
+        translation 0 1 0
+        children [
+            Shape {
+                geometry Cylinder {
+                    radius 0.04
+                    height 2
+                }
+                appearance Appearance {
+                    material Material {
+                        shininess 0.8
+                        diffuseColor 1 1 1
+                        specularColor 0.9 0.9 0.9
+                    }
+                }
+            }
+        ]
+    }
+]}
+}
+
+PROTO StraightRoadTile [
+    field SFRotation rotation 0 0 0 0
+    field SFVec3f scale 9 0 9
+    field SFVec2f txScale 1 1
+] 
+{
+    Transform {
+        rotation IS rotation
+        scale IS scale
+        children [
+            Shape {
+                geometry IndexedFaceSet {
+                    coord Coordinate { 
+                        point [0 0 0, 1 0 0, 1 0 1, 0 0 1]
+                    }
+                    coordIndex [2 1 0, 3 2 0]
+                }
+                appearance Appearance {
+                    texture ImageTexture {
+                        url "road_free.jpg"
+                    }
+                    textureTransform TextureTransform {
+                        scale IS txScale
+                    }
+                }
+            }
+        ]
+    }
+}
+
+PROTO BrickWall [] 
+{
+    Shape {
+        geometry Box {
+            size 100 3 0.6
+        }    
+        appearance Appearance {
+            texture ImageTexture {
+                url "brick_wall.jpg"
+                repeatS TRUE
+                repeatT TRUE
+            }
+            textureTransform TextureTransform {
+                scale 50 2
+            }
+            material Material {
+                shininess 0.05
+                diffuseColor .95 .5 0
+                #specularColor 1 0 0
+                ambientIntensity 0.1
+            }
+        }
+    }
 }
 
 Transform {
@@ -62,15 +274,6 @@ Transform {
 		}
 	]
 }	
-
-#SpotLight {
-#	location 0 5 0
-#	color 1 0 0
-#	direction 1 0 0
-#	on TRUE
-#	beamWidth 1.6
-#	radius 5
-#}
 
 PROTO Osa [
 	field SFRotation rotation 0 0 0	0
@@ -118,6 +321,8 @@ PROTO Osa [
 	}
 }
 
+
+### Pomocne osy.
 DEF OsaX Osa {
 	rotation 0.0 0.0 1.0 -1.571
 	color 1 0 0 # cervena
@@ -134,29 +339,43 @@ DEF OsaZ Osa {
 }
 
 
+### Podklad.
 DEF Podklad Shape {
    	geometry ElevationGrid {
-		xDimension 10
-		zDimension 10
-		xSpacing 5
-		zSpacing 5
-		solid TRUE
-		height [
-			1    1    1    1    1    1    1    1    1    1
-			1    0.5  0.25 0    0    0    0    0    0    1
-			1    0.25 0.1  0    0    0    0    0    0    1
-			1    0    -0.1 0    0    0    0    0    0    1
-			1    0    0    0    0    0    0    0    0    1
-            1    0    0.2  0.3  0.2  0    0    0    0    1
-			1    0    0    0    0    0    0    0    0    1
-			1    0    0    0    0    0    0    0    0    1
-			1    0    0    0    0    0    0    0    0    1
-			1    1    1    1    1    1    1    1    1    1
+		xDimension 11
+		zDimension 11
+		xSpacing 10
+		zSpacing 10
+		#solid TRUE
+#		height [
+#			1    1    1    1    1    1    1    1    1    1
+#			1    0.5  0.25 0    0    0    0    0    0    1
+#			1    0.25 0.1  0    0    0    0    0    0    1
+#			1    0    -0.1 0    0    0    0    0    0    1
+#			1    0    0    0    0    0    0    0    0    1
+#           1    0    0.2  0.3  0.2  0    0    0    0    1
+#			1    0    0    0    0    0    0    0    0    1
+#			1    0    0    0    0    0    0    0    0    1
+#			1    0    0    0    0    0    0    0    0    1
+#			1    1    1    1    1    1    1    1    1    1
+#		]
+        height [
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+            0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+			0    0    0    0    0    0    0    0    0    0    0
+            0    0    0    0    0    0    0    0    0    0    0
 		]
 	}
 	appearance Appearance {     
         textureTransform TextureTransform {
-            scale 50 50
+            scale 100 100
         }
 		texture	ImageTexture {
 			repeatS	TRUE
@@ -169,62 +388,150 @@ DEF Podklad Shape {
 	}
 }
 
-PROTO EquilateralTriangle [
-    field MFVec3f point [-1 0 0, 1 0 0, 0 0.866 0]
-]
+### Zed kolem.
+Transform 
 {
-    Shape {
-        geometry IndexedFaceSet {
-            coord Coordinate {
-                point IS point
-            }
-            coordIndex [0 1 2]
-        }
-    }
+    translation 50 1.5 0
+    children
+    [
+        BrickWall {}
+    ]
 }
 
-PROTO EquilateralTriangle3D [
-    field MFVec3f point [-1 0 0, 1 0 0, 0 0.866 0]
-    field SFFloat height 1
-    field SFColor diffuseColor 1 1 1
-]
-{
-    Shape {
-        geometry Extrusion {
-            crossSection [-1 0, 1 0, 0 0.866]
-            spine [0 0 0, 1 0 0]
-            scale [1 1, 1 1]
-        }
-    }
+Transform {
+    translation 50 1.5 100
+    children
+    [
+        BrickWall {}
+    ]
 }
 
-Group {
+Transform
+{
+    rotation 0 1 0 1.5708
+    translation 0 1.5 50
+    children
+    [
+        BrickWall {}
+    ]
+}
+
+Transform
+{
+    rotation 0 1 0 1.5708
+    translation 100 1.5 50
+    children
+    [
+        BrickWall {}
+    ]
+}
+
+
+### Silnice.
+Transform {
+    translation 0 0.005 0
     children [
-        Shape {
-            geometry Cylinder {
-                radius 0.03
-                height 2
-            }
-            appearance Appearance {
-                material Material {
-                    shininess 0.8
-                    diffuseColor 1 1 1
-                    specularColor 0.9 0.9 0.9
-                }
-            }
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
         }
+    ]
+}
 
-        Shape {
-            geometry IndexedFaceSet {
-                coord Coordinate {
-                    point [
-                        -0.2 0 0,
-                        0.2 0 0,
-                        0 0.2 0
-                    ]
-                }
-                coordIndex [0 1 2]
-            }
+Transform {
+    translation 45 0.005 0
+    children [
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
         }
+    ]
+}
+
+Transform {
+    translation 91 0.005 0
+    children [
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
+        }
+    ]
+}
+
+Transform {
+    translation 0 0.005 9
+    rotation 0 1 0 1.5708
+    children [
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
+        }
+    ]
+}
+
+Transform {
+    translation 0 0.005 55
+    rotation 0 1 0 1.5708
+    children [
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
+        }
+    ]
+}
+
+Transform {
+    translation 0 0.005 100
+    rotation 0 1 0 1.5708
+    children [
+        StraightRoadTile {
+            rotation 0 0 0 0
+            scale 9 0 100
+            txScale 1 10.333
+        }
+    ]
+}
+
+
+### Znacky.
+## Stred vedlejsi.
+Transform {
+    translation 44 0 43
+    rotation 0 1 0 3.141592
+    children
+    [
+        ZnDejPrednost {}
+    ]
+}
+
+Transform {
+    translation 55 0 57
+    children
+    [
+        ZnDejPrednost {}
+    ]
+}
+
+## Stred hlavni.
+Transform {
+    translation 44 0 56
+    rotation 0 1 0 -1.5708
+    children
+    [
+        ZnHlavniSilnice {}
+    ]
+}
+
+Transform {
+    translation 57 0 43
+    rotation 0 1 0 1.5708
+    children
+    [
+        ZnHlavniSilnice {}
     ]
 }
