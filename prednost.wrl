@@ -1,0 +1,72 @@
+#VRML V2.0 utf8
+
+
+Group { children [
+    # Horni trojuhelnik
+    Transform {
+        rotation 1 0 0 1.5708
+        scale 0.4 0.4 0.4
+        translation 0 2.1 0.06
+        children [
+            # Cerveny podklad
+            Shape {
+                geometry Extrusion {
+                    crossSection [-1 0, 1 0, 0 1.73205]
+                    spine [0 0 0, 0 0.003 0]
+                    beginCap TRUE
+                    endCap TRUE
+                    solid TRUE
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor 1 0 0
+                        specularColor 0.9 0.1 0.1
+                    }
+                }
+            }
+
+            # Bile pole
+            Transform {
+                scale 0.6 1 0.6
+                translation 0 0 0.25
+                children [
+                    Shape {
+                        geometry Extrusion {
+                            crossSection [-1 0, 1 0, 0 1.73205]
+                            spine [0 0.0001 0, 0 0.0035 0]
+                            beginCap TRUE
+                            endCap TRUE
+                            solid TRUE
+                        }
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor 1 1 1
+                                specularColor 0.9 0.9 0.9
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+
+    # Sloupek.
+    Transform {
+        translation 0 1 0
+        children [
+            Shape {
+                geometry Cylinder {
+                    radius 0.04
+                    height 2
+                }
+                appearance Appearance {
+                    material Material {
+                        shininess 0.8
+                        diffuseColor 1 1 1
+                        specularColor 0.9 0.9 0.9
+                    }
+                }
+            }
+        ]
+    }
+]}
