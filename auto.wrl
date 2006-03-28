@@ -1,0 +1,168 @@
+#VRML V2.0 utf8
+
+Background {
+	groundColor	0.1 0.9 0.1
+	skyColor 0.3 0.3 1
+}
+
+PointLight {
+	intensity 1
+	color 0.9 0.1 0.1
+	location 0 10 0
+
+}
+
+Transform {
+	translation	-2 0 0
+	children [
+		Shape {
+			geometry Extrusion {
+				crossSection [-0.02 0, 0 0.02, 0.02 0, 0 -0.02]
+				spine [0 0 0, 0 0.4 0, 0 0.8 -0.3, 0 1.8 -0.4]
+				beginCap TRUE
+				endCap TRUE
+				solid TRUE
+			}
+		}
+	]
+}
+
+#Shape {
+#	geometry Extrusion {
+#		crossSection [-0.15 0.2, 0.15 0.2, 0.15 -0.15, -0.15 -0.15]
+#		spine [0 0 0, 0 0.3 0]
+#		scale [1 1, 2 2]
+#		beginCap TRUE
+#		endCap FALSE
+#		solid TRUE
+#	}
+#}
+
+
+PROTO Tyc []
+{
+Shape {
+    appearance Appearance {
+        # TODO
+        material Material {
+            diffuseColor .63 .39 .31
+            specularColor .94 .83 .48
+            ambientIntensity .14
+            shininess .11
+        }
+
+    }
+    geometry Extrusion {
+        creaseAngle 1.524
+        spine [
+            0 0 0, 0 .6 0, .00392522 .650659 0, .017148 .703026 0,
+            .0453704 .770602 0, .103538 .868509 0, .253971 1.0574 0,
+            .704387 1.55306 0, .786265 1.67415 0, .8 1.7 0, .842645 1.80395 0,
+            .887543 1.96862 0, .947607 2.36969 0, 1 3 0
+        ]
+        scale .2 .2
+        crossSection [
+            -.5 0, -.38 .39, 0 .5, .4 .4, .5 0, .4 -.4, 0 -.5, -.4 -.4,
+            -.5 0
+        ]
+    }
+}
+}
+
+Transform {
+    scale 0.25 0.75 0.25
+    children [
+        Tyc { }
+    ]
+}
+
+#Shape {
+#    appearance Appearance {
+#        material Material {
+#            diffuseColor .471 .522 .58
+#            specularColor 1 1 1
+#            ambientIntensity .123
+#            shininess .13
+#        }
+#    }
+#    geometry Extrusion {
+#        endCap FALSE
+#        solid TRUE
+#        convex FALSE
+#        spine [
+#            0 0 0, 0 .3 0
+#        ]
+#        scale [
+#            1 1, 1.3 1.3
+#        ]
+#        crossSection [
+#            .3 .3, .2 -.3, -.2 -.3, -.3 .3, .3 .3
+#        ]
+#    }
+#}
+
+# Postranice trakare
+PROTO PostraniceTrakare [] {
+    Transform {
+        scale 0.5 0.5 0.5
+        children [
+            Shape {
+                appearance Appearance {
+                    material Material {
+                        diffuseColor .11 .208 .11
+                        specularColor .298 .298 .298
+                        emissiveColor .11 .208 .11
+                        ambientIntensity 0
+                        shininess .1
+                    }
+                }
+                geometry Extrusion {
+                    spine [
+                        -.5 0 0, -.5 1 0, .5 1 0, .5 0 0, -.5 0 0
+                    ]
+                    scale [
+                        1 1, .9 .9, .9 .9, 1 1, 1 1
+                    ]
+                    crossSection [
+                        -.31 .3, -.08 0, -.09 0, -.32 .3, -.31 .3
+                    ]
+                }
+            }
+        ]
+    }
+}
+
+
+PROTO DnoTrakare [] {
+    Transform {
+        children [
+            Shape {
+                geometry Box {
+                    size 0.5 0.5 0.01
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor .11 .208 .11
+                        specularColor .298 .298 .298
+                        emissiveColor .11 .208 .11
+                        ambientIntensity 0
+                        shininess .1
+                    }
+                }
+            }
+        ]
+    }
+}
+
+
+Transform {
+    children [
+        PostraniceTrakare {}
+        Transform {
+            translation 0 0.255 -0.1425
+            scale 0.583 0.583 1
+            rotation 1 0 0 0.035
+            children [ DnoTrakare {} ]
+        }
+    ]
+}
