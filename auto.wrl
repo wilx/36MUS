@@ -5,6 +5,11 @@ Background {
 	skyColor 0.3 0.3 1
 }
 
+NavigationInfo {
+    avatarSize 1.86
+    headlight TRUE
+}
+
 PointLight {
 	intensity 1
 	color 0.9 0.1 0.1
@@ -12,68 +17,135 @@ PointLight {
 
 }
 
-Transform {
-	translation	-2 0 0
-	children [
-		Shape {
-			geometry Extrusion {
-				crossSection [-0.02 0, 0 0.02, 0.02 0, 0 -0.02]
-				spine [0 0 0, 0 0.4 0, 0 0.8 -0.3, 0 1.8 -0.4]
-				beginCap TRUE
-				endCap TRUE
-				solid TRUE
+PROTO Osa [
+	field SFRotation rotation 0 0 0	0
+	field SFColor color 1 0 0
+]
+{
+	Group {
+		children [
+			Transform {
+				rotation IS	rotation
+				children [
+                    # Osa.
+					Shape {
+						geometry Cylinder {
+							radius 0.25
+							height 20
+						}
+						appearance Appearance {
+							material Material {
+								emissiveColor IS color
+                                transparency 0.2
+							}
+						}    
+                    }
+                    # Koukle na konci.
+			        Transform {
+				        translation	0 10 0
+				        children [
+					        Shape {
+						        geometry Sphere	{
+							        radius 0.3
+						        }
+						        appearance Appearance {
+							        material Material {
+								        emissiveColor IS color
+                                        transparency 0.2
+							        }
+						        }
+					        }
+				        ]
+			        }
+				]	
 			}
-		}
-	]
+		]
+	}
 }
 
-#Shape {
-#	geometry Extrusion {
-#		crossSection [-0.15 0.2, 0.15 0.2, 0.15 -0.15, -0.15 -0.15]
-#		spine [0 0 0, 0 0.3 0]
-#		scale [1 1, 2 2]
-#		beginCap TRUE
-#		endCap FALSE
-#		solid TRUE
-#	}
+
+### Pomocne osy.
+#DEF OsaX Osa {
+#	rotation 0.0 0.0 1.0 -1.5708
+#	color 1 0 0 # cervena
 #}
+
+#DEF OsaY Osa {
+#    rotation 0.0 0.0 0.0 0
+#    color 0 1 0 # zelena
+#}
+
+#DEF OsaZ Osa {
+#    rotation 1.0 0.0 0.0 1.5708
+#    color 0 0 1 # modra
+#}
+
+# Meritko, metr krat metr krat metr.
+Transform {
+    translation -3 0.5 0
+    children [
+        Shape {
+            geometry Box {
+                size 1 1 1
+            }
+            appearance Appearance {
+                material Material {
+                    diffuseColor .02 .5 .12
+                    specularColor .76 .76 .76
+                    emissiveColor 0 .16 0
+                    ambientIntensity 0
+                    shininess .15
+                    transparency .31
+                }
+            }
+        }
+    ]
+}
 
 
 PROTO Tyc []
 {
-Shape {
-    appearance Appearance {
-        # TODO
-        material Material {
-            diffuseColor .63 .39 .31
-            specularColor .94 .83 .48
-            ambientIntensity .14
-            shininess .11
-        }
+    Transform {
+        rotation 0 0 1 1.5708
+        children [
+                Transform {
+                scale 0.2 0.5 0.2
+                rotation 1 0 0 1.5708
+                children [
+                    Shape {
+                        appearance Appearance {
+                            # TODO
+                            material Material {
+                                diffuseColor .63 .39 .31
+                                specularColor .94 .83 .48
+                                ambientIntensity .14
+                                shininess .11
+                            }
 
-    }
-    geometry Extrusion {
-        creaseAngle 1.524
-        spine [
-            0 0 0, 0 .6 0, .00392522 .650659 0, .017148 .703026 0,
-            .0453704 .770602 0, .103538 .868509 0, .253971 1.0574 0,
-            .704387 1.55306 0, .786265 1.67415 0, .8 1.7 0, .842645 1.80395 0,
-            .887543 1.96862 0, .947607 2.36969 0, 1 3 0
+                        }
+                        geometry Extrusion {
+                            creaseAngle 2
+                            spine [
+                                0 0 0, 0 .6 0, .00392522 .650659 0, .017148 .703026 0, .0453704 .770602 0,
+                                .103538 .868509 0, .253971 1.0574 0, .704387 1.55306 0, .786265 1.67415 0,
+                                .8 1.7 0, .842645 1.80395 0, .887543 1.96862 0, .947607 2.36969 0,
+                                1 3 0
+                            ]
+                            scale .1 .1
+                            # Kruh z 20 segmentu.
+                            crossSection [
+                                0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
+                                1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
+                                0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
+                                -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
+                                0 1
+                            ]
+                        }
+                    }
+                ]
+            }
         ]
-        scale .2 .2
-        crossSection [
-            -.5 0, -.38 .39, 0 .5, .4 .4, .5 0, .4 -.4, 0 -.5, -.4 -.4,
-            -.5 0
-        ]
     }
-}
-}
-
-Transform {
-    scale 0.25 0.75 0.25
-    children [
-        Tyc { }
-    ]
 }
 
 #Shape {
@@ -118,10 +190,10 @@ PROTO PostraniceTrakare [] {
                 }
                 geometry Extrusion {
                     spine [
-                        -.5 0 0, -.5 1 0, .5 1 0, .5 0 0, -.5 0 0
+                        -.5 0 0, -.4 1 0, .4 1 0, .5 0 0, -.5 0 0
                     ]
                     scale [
-                        1 1, .9 .9, .9 .9, 1 1, 1 1
+                        1.3 1.3, .9 .9, .9 .9, 1.3 1.3, 1.3 1.3
                     ]
                     crossSection [
                         -.31 .3, -.08 0, -.09 0, -.32 .3, -.31 .3
@@ -155,14 +227,39 @@ PROTO DnoTrakare [] {
 }
 
 
-Transform {
+PROTO VanaTrakare [] {
+    Transform {
+        rotation 1 0 0 -1.574
+        translation 0 0.25 0
+        scale 1.25 1.25 1.25
+        children [
+            PostraniceTrakare {}
+            Transform {
+                translation 0 0.270 -0.16
+                scale 0.385 0.55 1
+                rotation 1 0 0 0.22359
+                children [ DnoTrakare {} ]
+            }
+        ]
+    }
+}
+
+
+Group {
     children [
-        PostraniceTrakare {}
         Transform {
-            translation 0 0.255 -0.1425
-            scale 0.583 0.583 1
-            rotation 1 0 0 0.035
-            children [ DnoTrakare {} ]
+            rotation 0 1 0 3.141592
+            children [VanaTrakare {}]
+        }
+        Transform {
+            rotation 0 1 0 0.1
+            translation 0.04 0 -0.05
+            children [Tyc {}]
+        }
+        Transform {
+            rotation 0 1 0 -0.1
+            translation -0.04 0 -0.05
+            children [Tyc {}]
         }
     ]
 }
