@@ -463,31 +463,7 @@ PROTO Trakar []
             }
             # Naklad.
             # Spodni vrstva.
-            Transform {translation -0.1 0.1 0.15 children [ZeleKoule {}]}
-            Transform {translation 0    0.1 0.15 children [ZeleKoule {}]}
-            Transform {translation 0.1  0.1 0.15 children [ZeleKoule {}]}
-
-            Transform {translation -0.1 0.1 0.22 children [ZeleKoule {}]}
-            Transform {translation 0    0.1 0.22 children [ZeleKoule {}]}
-            Transform {translation 0.1  0.1 0.22 children [ZeleKoule {}]}
-
-            Transform {translation -0.1 0.1 0.29 children [ZeleKoule {}]}
-            Transform {translation 0    0.1 0.29 children [ZeleKoule {}]}
-            Transform {translation 0.1  0.1 0.29 children [ZeleKoule {}]}
-
-            Transform {translation -0.08 0.1 0.36 children [ZeleKoule {}]}
-            Transform {translation 0    0.1 0.36 children [ZeleKoule {}]}
-            Transform {translation 0.08  0.1 0.36 children [ZeleKoule {}]}
-
-            Transform {translation -0.08 0.1 0.43 children [ZeleKoule {}]}
-            Transform {translation 0    0.1 0.43 children [ZeleKoule {}]}
-            Transform {translation 0.08  0.1 0.43 children [ZeleKoule {}]}
-
-            # Stredni vrstva.
-            Transform {
-                scale 1.1 1.1 1
-                rotation 0 1 0 3.141592
-                translation 0 0.1 0.55
+            DEF VrstvaKouli Group {
                 children [
                     Transform {translation -0.1 0.1 0.15 children [ZeleKoule {}]}
                     Transform {translation 0    0.1 0.15 children [ZeleKoule {}]}
@@ -511,31 +487,19 @@ PROTO Trakar []
                 ]
             }
 
+            # Stredni vrstva.
+            Transform {
+                scale 1.1 1.1 1
+                rotation 0 1 0 3.141592
+                translation 0 0.1 0.55
+                children USE VrstvaKouli
+            }
+
             # Horni vrstva.
             Transform {
                 scale 1.3 1.1 1
                 translation 0 0.15 -0.05
-                children [
-                    Transform {translation -0.1 0.1 0.15 children [ZeleKoule {}]}
-                    Transform {translation 0    0.1 0.15 children [ZeleKoule {}]}
-                    Transform {translation 0.1  0.1 0.15 children [ZeleKoule {}]}
-
-                    Transform {translation -0.1 0.1 0.22 children [ZeleKoule {}]}
-                    Transform {translation 0    0.1 0.22 children [ZeleKoule {}]}
-                    Transform {translation 0.1  0.1 0.22 children [ZeleKoule {}]}
-
-                    Transform {translation -0.1 0.1 0.29 children [ZeleKoule {}]}
-                    Transform {translation 0    0.1 0.29 children [ZeleKoule {}]}
-                    Transform {translation 0.1  0.1 0.29 children [ZeleKoule {}]}
-
-                    Transform {translation -0.08 0.1 0.36 children [ZeleKoule {}]}
-                    Transform {translation 0    0.1 0.36 children [ZeleKoule {}]}
-                    Transform {translation 0.08  0.1 0.36 children [ZeleKoule {}]}
-
-                    Transform {translation -0.08 0.1 0.43 children [ZeleKoule {}]}
-                    Transform {translation 0    0.1 0.43 children [ZeleKoule {}]}
-                    Transform {translation 0.08  0.1 0.43 children [ZeleKoule {}]}
-                ]
+                children USE VrstvaKouli
             }
         ]
     }
@@ -548,6 +512,79 @@ Trakar {}
 
 
 
+
+Shape {
+    geometry Cylinder {
+        radius 0.35
+        height 0.75
+    }
+}
+
+
+Shape {
+    geometry Extrusion {
+        creaseAngle 2
+        crossSection [
+            0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
+            1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
+            0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
+            -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
+            0 1
+        ]
+        spine [
+            0 0 0, 0 .05 0, 0 1.5 0, 0 1.6 0, 0 1.7 0, 0 1.75 0
+        ]
+        scale [
+            .6 .6, .7 .7, .8 .8, .7 .7, .4 .4, .2 .2
+        ]
+    }
+    appearance Appearance {
+        material Material {
+            diffuseColor .478 .529 .6
+            specularColor .318 .4 .4
+            emissiveColor .251 .271 .31
+            ambientIntensity .0667
+            shininess .54
+        }
+    }
+}
+
+
+
+Group {
+    children [
+        # Polokoule.
+        Transform {
+            translation 0 0.075 0
+            children [
+                Shape {
+                    geometry Sphere {
+                        radius 0.1
+                    }
+                    appearance Appearance {
+                        material DEF KovovaSed Material {
+                            diffuseColor .478 .529 .6
+                            specularColor .318 .4 .4
+                            emissiveColor .251 .271 .31
+                            ambientIntensity .0667
+                            shininess .54
+                        }
+                    }
+                }
+            ]
+        }
+        # Valec.
+        Shape {
+            geometry Cylinder {
+                radius 0.1
+                height 0.15
+            }
+            appearance Appearance {
+                material USE KovovaSed
+            }
+        }        
+    ]
+}
 
 
 
