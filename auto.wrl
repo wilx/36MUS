@@ -341,8 +341,39 @@ PROTO Rafek [
 #                        .15 -.05, .2 -.15
 #                    ]
 
-
-
+PROTO Podpera [
+    field SFVec3f scale 1 1 1
+] {
+    Transform {
+        scale IS scale
+        children [
+            Shape {
+                geometry Extrusion {
+                    creaseAngle 2
+                    crossSection [
+                        0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
+                        1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
+                        0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
+                        -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
+                        0 1
+                    ]
+                    spine [
+                        -.4 0 0, -.3 .8 0, .3 .8 0, .4 0 0
+                    ]
+                    scale .05 .05
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor .63 .39 .31
+                        specularColor .94 .83 .48
+                        ambientIntensity .14
+                        shininess .11
+                    }
+                }
+            }
+        ]
+    }
+}
 
 
 PROTO Trakar []
@@ -381,7 +412,6 @@ PROTO Trakar []
                 ]
             }
             Transform {
-                translation 0 0 0
                 rotation 0 0 1 1.5708
                 children [
                     Shape {
@@ -401,11 +431,26 @@ PROTO Trakar []
                     }
                 ]
             }
+            Transform {
+                rotation 1 0 0 0.4
+                translation 0 0.01 -0.03
+                children [
+                    Podpera {
+                        scale 0.16 0.215 0.2
+                    }
+                ]
+            }
         ]
     }
 }
 
-
-
-
 Trakar {}
+
+
+
+
+
+
+
+
+
