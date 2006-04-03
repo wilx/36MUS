@@ -233,7 +233,7 @@ PROTO VanaTrakare [] {
     Transform {
         rotation 1 0 0 -1.5708
         translation 0 0.25 0
-        scale 1.25 1.25 1.25
+        scale 1.25 1.25 1.3
         children [
             PostraniceTrakare {}
             Transform {
@@ -265,6 +265,8 @@ PROTO Pneumatika [
                 geometry Extrusion {
                     # Kruh z 20 segmentu.
                     creaseAngle 2
+                    beginCap FALSE
+                    endCap FALSE
                     crossSection [
                         0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
                         1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
@@ -293,12 +295,63 @@ PROTO Pneumatika [
 }
 
 
+PROTO Rafek [
+    field SFVec3f scale 1 1 1
+] {
+    Transform {
+        scale IS scale
+        children [
+            Shape {
+                geometry Extrusion {
+                    # Kruh z 20 segmentu.
+                    creaseAngle 2
+                    beginCap FALSE
+                    endCap FALSE
+                    spine [
+                        0 1 0, 0.222521 0.974928 0, 0.433884 0.900969 0, 0.62349 0.781831 0, 0.781831 0.62349 0,
+                        0.900969 0.433884 0, 0.974928 0.222521 0, 
+                        1 0 0, 0.974928 -0.222521 0, 0.900969 -0.433884 0, 0.781831 -0.62349 0, 0.62349 -0.781831 0,
+                        0.433884 -0.900969 0, 0.222521 -0.974928 0, 
+                        0 -1 0, -0.222521 -0.974928 0, -0.433884 -0.900969 0, -0.62349 -0.781831 0, -0.781831 -0.62349 0,
+                        -0.900969 -0.433884 0, -0.974928 -0.222521 0,
+                        -1 -0 0, -0.974928 0.222521 0, -0.900969 0.433884 0, -0.781831 0.62349 0, -0.62349 0.781831 0,
+                        -0.433884 0.900969 0, -0.222521 0.974928 0
+                        0 1 0
+                    ]
+                    crossSection [
+                        .2 -.15, .25 -.25, .3 -.3, .05 -.25, -.25 -.2, -.65 -.2,
+                        -.75 -.25, -.8 -.3, -.85 -.3, -.85 .3, -.7925 .3, -.75 .25,
+                        -.65 .2, -.25 .2, .05 .25, .3 .3, .25 .25, .2 .15, .15 .05,
+                        .15 -.05, .2 -.15
+                    ]
+                }
+                appearance Appearance {
+                    material Material {
+                    }
+                }
+            }
+        ]
+    }
+}
+
+#                    crossSection [
+#                        .2 -.15, .25 -.25, .3 -.3, .05 -.25, -.25 -.2, -.65 -.2,
+#                        -.75 -.25, -.8 -.3, -.85 -.3, -.85 .3, -.7925 .3, -.75 .25,
+#                        -.65 .2, -.25 .2, .05 .25, .3 .3, .25 .25, .2 .15, .15 .05,
+#                        .15 -.05, .2 -.15
+#                    ]
+
+
+
+
+
 PROTO Trakar []
 {
     Group {
         children [
             Transform {
-                rotation 0 1 0 3.141592
+                rotation 0 1 0.03 3.141592
+                translation 0 0.01 -0.05
                 children [VanaTrakare {}]
             }
             Transform {
@@ -319,17 +372,40 @@ PROTO Trakar []
                     }
                 ]
             }
+            Transform {
+                rotation 0 1 0 1.5708
+                children [
+                    Rafek {
+                        scale 0.05 0.05 0.05
+                    }
+                ]
+            }
+            Transform {
+                translation 0 0 0
+                rotation 0 0 1 1.5708
+                children [
+                    Shape {
+                        geometry Cylinder {
+                            radius 0.01
+                            height 0.13
+                        }
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor .21 .22 .24
+                                specularColor .25 .26 .29
+                                emissiveColor .15 .15 .17
+                                ambientIntensity 0
+                                shininess .13
+                            }
+                        }
+                    }
+                ]
+            }
         ]
     }
 }
 
+
+
+
 Trakar {}
-
-
-
-
-
-
-
-
-
