@@ -127,11 +127,13 @@ PROTO Tyc []
                             creaseAngle 2
                             spine [
                                 0 0 0, 0 .6 0, .00392522 .650659 0, .017148 .703026 0, .0453704 .770602 0,
-                                .103538 .868509 0, .253971 1.0574 0, .704387 1.55306 0, .786265 1.67415 0,
-                                .8 1.7 0, .842645 1.80395 0, .887543 1.96862 0, .947607 2.36969 0,
-                                1 3 0
+                                .103538 .868509 0, .253971 1.0574 0, .65 1.5 0, .75 1.6 0, .8 1.75 0,
+                                .85 1.9 0, .85 2.1 0, .85 2.5 0
                             ]
-                            scale .1 .1
+                            scale [
+                                .1 .1, .1 .1, .1 .1, .1 .1, .1 .1, .1 .1, .1 .1, .1 .1, .1 .1,
+                                .1 .1, .1 .1, .1 .1, .1 .1
+                            ]
                             # Kruh z 20 segmentu.
                             crossSection [
                                 0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
@@ -229,7 +231,7 @@ PROTO DnoTrakare [] {
 
 PROTO VanaTrakare [] {
     Transform {
-        rotation 1 0 0 -1.574
+        rotation 1 0 0 -1.5708
         translation 0 0.25 0
         scale 1.25 1.25 1.25
         children [
@@ -245,21 +247,89 @@ PROTO VanaTrakare [] {
 }
 
 
-Group {
-    children [
-        Transform {
-            rotation 0 1 0 3.141592
-            children [VanaTrakare {}]
-        }
-        Transform {
-            rotation 0 1 0 0.1
-            translation 0.04 0 -0.05
-            children [Tyc {}]
-        }
-        Transform {
-            rotation 0 1 0 -0.1
-            translation -0.04 0 -0.05
-            children [Tyc {}]
-        }
-    ]
+PROTO Pneumatika [
+    field SFVec3f scale 1 1 1
+] {
+    Transform {
+        scale IS scale
+        children [
+            Shape {
+                appearance Appearance {
+                    material Material {
+                        diffuseColor 0 0 0
+                        specularColor .72 .72 .72
+                        ambientIntensity 0
+                        shininess .18
+                    }
+                }
+                geometry Extrusion {
+                    # Kruh z 20 segmentu.
+                    creaseAngle 2
+                    crossSection [
+                        0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
+                        1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
+                        0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
+                        -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
+                        0 1
+                    ]
+                    spine [
+                        0 1 0, 0.222521 0.974928 0, 0.433884 0.900969 0, 0.62349 0.781831 0, 0.781831 0.62349 0,
+                        0.900969 0.433884 0, 0.974928 0.222521 0, 
+                        1 0 0, 0.974928 -0.222521 0, 0.900969 -0.433884 0, 0.781831 -0.62349 0, 0.62349 -0.781831 0,
+                        0.433884 -0.900969 0, 0.222521 -0.974928 0, 
+                        0 -1 0, -0.222521 -0.974928 0, -0.433884 -0.900969 0, -0.62349 -0.781831 0, -0.781831 -0.62349 0,
+                        -0.900969 -0.433884 0, -0.974928 -0.222521 0,
+                        -1 -0 0, -0.974928 0.222521 0, -0.900969 0.433884 0, -0.781831 0.62349 0, -0.62349 0.781831 0,
+                        -0.433884 0.900969 0, -0.222521 0.974928 0
+                        0 1 0
+                    ]
+                    scale [
+                        .25 .33
+                    ]
+                }
+            }
+        ]
+    }
 }
+
+
+PROTO Trakar []
+{
+    Group {
+        children [
+            Transform {
+                rotation 0 1 0 3.141592
+                children [VanaTrakare {}]
+            }
+            Transform {
+                rotation 0 1 0 0.09
+                translation 0.055 0 -0.045
+                children [Tyc {}]
+            }
+            Transform {
+                rotation 0 1 0 -0.09
+                translation -0.055 0 -0.045
+                children [Tyc {}]
+            }
+            Transform {
+                rotation 0 1 0 1.5708
+                children [
+                    Pneumatika {
+                        scale 0.08 0.08 0.08
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+Trakar {}
+
+
+
+
+
+
+
+
+
