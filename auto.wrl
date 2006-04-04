@@ -513,78 +513,150 @@ Trakar {}
 
 
 
-Shape {
-    geometry Cylinder {
-        radius 0.35
-        height 0.75
-    }
-}
-
-
-Shape {
-    geometry Extrusion {
-        creaseAngle 2
-        crossSection [
-            0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
-            1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
-            0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
-            -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
-            0 1
-        ]
-        spine [
-            0 0 0, 0 .05 0, 0 1.5 0, 0 1.6 0, 0 1.7 0, 0 1.75 0
-        ]
-        scale [
-            .6 .6, .7 .7, .8 .8, .7 .7, .4 .4, .2 .2
-        ]
-    }
-    appearance Appearance {
-        material Material {
-            diffuseColor .478 .529 .6
-            specularColor .318 .4 .4
-            emissiveColor .251 .271 .31
-            ambientIntensity .0667
-            shininess .54
-        }
-    }
-}
 
 
 
-Group {
-    children [
-        # Polokoule.
-        Transform {
-            translation 0 0.075 0
-            children [
-                Shape {
-                    geometry Sphere {
-                        radius 0.1
-                    }
-                    appearance Appearance {
-                        material DEF KovovaSed Material {
-                            diffuseColor .478 .529 .6
-                            specularColor .318 .4 .4
-                            emissiveColor .251 .271 .31
-                            ambientIntensity .0667
-                            shininess .54
+PROTO BenderHlava [
+    field SFVec3f scale 1 1 1
+] {
+    Transform {
+        scale IS scale
+        children [
+            # Kulicka na konci anteny.
+            Transform {
+                translation 0 0.265 0
+                children [
+                    Shape {
+                        geometry Sphere {
+                            radius 0.01
+                        }
+                        appearance DEF KovovaSed Appearance {
+                            material Material {
+                                    diffuseColor .478 .529 .6
+                                    specularColor .318 .4 .4
+                                    emissiveColor .251 .271 .31
+                                    ambientIntensity .0667
+                                    shininess .54
+                            }
                         }
                     }
+                ]
+            }
+            # Kuzel anteny.
+            Transform {
+                translation 0 0.225 0
+                children [
+                    Shape {
+                        geometry Cone {
+                            bottomRadius 0.01
+                            height 0.1
+                        }
+                        appearance USE KovovaSed
+                    }
+                ]
+            }
+            # Zakladna anteny.
+            Transform {
+                translation 0 0.17 0
+                scale 1 0.5 1
+                children [
+                    Shape {
+                        geometry Sphere {
+                            radius 0.02
+                        }
+                        appearance USE KovovaSed
+                    }
+                ]
+            }
+            # Polokoule.
+            Transform {
+                translation 0 0.075 0
+                scale 1.02 1 1.02
+                children [
+                    Shape {
+                        geometry Sphere {
+                            radius 0.1
+                        }
+                        appearance USE KovovaSed
+                    }
+                ]
+            }
+            # Valec.
+            Transform {
+                translation 0 0 0
+                children [
+                    Shape {
+                        geometry Cylinder {
+                            radius 0.1
+                            height 0.175
+                        }
+                        appearance USE KovovaSed
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+
+# Telo.
+PROTO BenderTelo [
+    field SFVec3f scale 1 1 1
+] {
+    Transform {
+        scale IS scale
+        translation 0 -0.5 0
+        children [
+            Shape {
+                geometry Extrusion {
+                    creaseAngle 2
+                    crossSection [
+                        0 1, .309017 .951057, .587785 .809017, .809017 .587785, .951057 .309017,
+                        1 0, .951057 -.309017, .809017 -.587785, .587785 -.809017, .309017 -.951057,
+                        0 -1, -.309017 -.951057, -.587785 -.809017, -.809017 -.587785, -.951057 -.309017,
+                        -1 0, -.951057 .309017, -.809017 .587785, -.587785 .809017, -.309017 .951057,
+                        0 1
+                    ]
+                    spine [
+                        0 0 0, 0 .05 0, 0 1.5 0, 0 1.6 0, 0 1.7 0, 0 1.75 0
+                    ]
+                    scale [
+                        .6 .6, .7 .7, .8 .8, .7 .7, .4 .4, .2 .2
+                    ]
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor .478 .529 .6
+                        specularColor .318 .4 .4
+                        emissiveColor .251 .271 .31
+                        ambientIntensity .0667
+                        shininess .54
+                    }
+                }
+            }
+        ]
+    }
+}
+
+
+Transform {
+    translation 0 0.5 1
+    scale 0.5 0.6 0.5
+    children [
+        Transform {
+            translation 0 0.09 0
+            children [
+                BenderHlava {}
+            ]
+        }
+        Transform {
+            translation 0 -.015 0
+            children [
+                BenderTelo {
+                    scale .3 .3 .3
                 }
             ]
         }
-        # Valec.
-        Shape {
-            geometry Cylinder {
-                radius 0.1
-                height 0.15
-            }
-            appearance Appearance {
-                material USE KovovaSed
-            }
-        }        
+
     ]
 }
-
-
-
